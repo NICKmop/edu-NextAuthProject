@@ -17,7 +17,7 @@ import {
     FormMessage
 }from "@/components/ui/form";
 
-import { CardWrapper } from "@/components/auth/cart-wrapper"
+import { CardWrapper } from "@/components/auth/card-wrapper"
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -92,7 +92,7 @@ export const ResiterForm = () => {
                                         <Input 
                                             {...field}
                                             disabled={isPending}
-                                            placeholder="홍길동"
+                                            placeholder="이창섭"
                                         />
                                     </FormControl>
                                     <FormMessage />

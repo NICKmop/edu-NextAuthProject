@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { ResisterSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
+import { generateVerificationToken } from "@/lib/tokens";
 
 export const register = async (values: z.infer<typeof ResisterSchema>) => {
     const validateFields = ResisterSchema.safeParse(values);
@@ -31,9 +32,11 @@ export const register = async (values: z.infer<typeof ResisterSchema>) => {
         }
     })
 
+    const verificationToken = await generateVerificationToken(email);
+
     // TODO: send verification token Email
 
-    return { success: "User created!!!"}
+    return { success: "Confirmation email sent!!!"}
     // revalidatePath()
     // revalidateTag()
 }

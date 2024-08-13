@@ -1,9 +1,10 @@
 "use client";
 
 import * as z from "zod";
-
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { LoginSchema } from "@/schemas";
@@ -17,13 +18,19 @@ import {
     FormMessage
 }from "@/components/ui/form";
 
-import { CardWrapper } from "@/components/auth/cart-wrapper"
+import { CardWrapper } from "@/components/auth/card-wrapper"
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
 
 export const LoginForm = () => {
+    const searchParams = useSearchParams();
+    
+    const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
+        ? "Eamil already in use with different provider!"
+        : "";
+
     const [error, setError] = useState<string|undefined>("");
     const [success, setSuccess] = useState<string|undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -43,8 +50,8 @@ export const LoginForm = () => {
         startTransition(() => {
             login(values)
                 .then((data) => {
-                    setError(data.error);
-                    setSuccess(data.success);
+                    setError(data?.error);
+                    setSuccess(data?.success);
                 })
         })
     }
@@ -99,7 +106,7 @@ export const LoginForm = () => {
                             )}
                         />
                     </div>
-                    <FormError message={error}/>
+                    <FormError message={error || urlError}/>
                     <FormSuccess message={success}/>
                     <Button
                         disabled={isPending}
