@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { ResisterSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const register = async (values: z.infer<typeof ResisterSchema>) => {
     const validateFields = ResisterSchema.safeParse(values);
@@ -33,8 +34,11 @@ export const register = async (values: z.infer<typeof ResisterSchema>) => {
     })
 
     const verificationToken = await generateVerificationToken(email);
-
     // TODO: send verification token Email
+    await sendVerificationEmail(
+        verificationToken.email,
+        verificationToken.token
+    );
 
     return { success: "Confirmation email sent!!!"}
     // revalidatePath()

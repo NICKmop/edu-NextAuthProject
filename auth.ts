@@ -26,8 +26,8 @@ export const {
     },
     callbacks: {
         async signIn({user, account}) {
+            
             // Allow OAuth withhout
-            // if(account?.provider === "credentials") 
             if(account?.provider !== "credentials") return true;
             
             const existingUser = await getUserById(user.id as string);
